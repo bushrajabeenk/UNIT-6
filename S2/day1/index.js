@@ -19,7 +19,6 @@ app.post("/signup", (req, res) => {
   return res.send("Signup successfull");
 });
 
-
 // created a token with password + data
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
@@ -46,11 +45,16 @@ app.get("/profile/:id", async (req, res) => {
   // res.send({ message: "Profile page", user });
 
   const token = req.headers["authorization"].split(" ")[1];
-  const verification = jwt.verify(token, "SECRET");
-  console.log(verification);
-
-  const user = await UserModel.findOne({ _id: id });
-  res.send({ message: "Profile page", user });
+  try {
+    const verification = jwt.verify(token, "SECRET");
+    console.log(verification);
+    if (verification) {
+      const user = await UserModel.findOne({ _id: id });
+      res.send({ message: "Profile page", user });
+    }
+  } catch {
+    return res.status(401).send("Unauthorized");
+  }
 });
 
 mongoose.connect("mongodb://localhost:27017/web-17").then(() => {
