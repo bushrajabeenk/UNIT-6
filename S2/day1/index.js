@@ -37,6 +37,15 @@ app.post("/login", async (req, res) => {
   return res.send({ message: "Login successfull", token: token });
 });
 
+// app.get("/profile/:id", async (req, res) => {
+//   const { id } = req.params;
+//   const token = req.headers["authorization"].split(" ")[1];
+
+//   try{
+
+//   }
+// });
+
 mongoose.connect("mongodb://localhost:27017/web-17").then(() => {
   app.listen(8080, () => {
     console.log("Server started on port 8080");
