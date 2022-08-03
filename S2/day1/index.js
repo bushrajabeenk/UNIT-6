@@ -19,6 +19,8 @@ app.post("/signup", (req, res) => {
   return res.send("Signup successfull");
 });
 
+
+// created a token with password + data
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   const user = await UserModel.findOne({ username, password });
@@ -37,14 +39,19 @@ app.post("/login", async (req, res) => {
   return res.send({ message: "Login successfull", token: token });
 });
 
-// app.get("/profile/:id", async (req, res) => {
-//   const { id } = req.params;
-//   const token = req.headers["authorization"].split(" ")[1];
+app.get("/profile/:id", async (req, res) => {
+  const { id } = req.params;
+  // earlier this was done
+  // const user = await UserModel.findOne({ _id: id });
+  // res.send({ message: "Profile page", user });
 
-//   try{
+  const token = req.headers["authorization"].split(" ")[1];
+  const verification = jwt.verify(token, "SECRET");
+  console.log(verification);
 
-//   }
-// });
+  const user = await UserModel.findOne({ _id: id });
+  res.send({ message: "Profile page", user });
+});
 
 mongoose.connect("mongodb://localhost:27017/web-17").then(() => {
   app.listen(8080, () => {
