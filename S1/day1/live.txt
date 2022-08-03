@@ -1,0 +1,462 @@
+and is for keys
+elemMatch is for values
+
+day-1 - PART - 1
+
+show dbs
+admin       40.00 KiB
+config     108.00 KiB
+eval       144.00 KiB
+local       72.00 KiB
+proj1      144.00 KiB
+project  112.00 KiB
+web-16     336.00 KiB
+web-17      80.00 KiB
+
+test> use web-17
+switched to db web-17
+
+web-17> db.users.insertMany([ { "name": "John", "age": 23, "tech": ["React", "JS"] }, { "name": "Tim", "age": 25, "tech": ["Java", "Maven"] }, { "name": "Pam", "age": 24, "tech": ["Node"] }])
+
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("62e0d5aae8175edb2c988400"),
+    '1': ObjectId("62e0d5aae8175edb2c988401"),
+    '2': ObjectId("62e0d5aae8175edb2c988402")
+  }
+}
+
+web-17> db.users.insertMany([
+...   {
+.....     "name": "Bide",
+.....     "age": 26,
+.....     "tech": ["JS"]
+       }
+       {
+.....     "name": "Bush",
+.....     "age": 27,
+.....     "tech": ["JS", "Redux"]
+.....   }
+... ])
+
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("62e0d640e8175edb2c988403"),
+    '1': ObjectId("62e0d640e8175edb2c988404")
+  }
+}
+
+web-17> db.users.find({tech: {$all: ["JS"]}})
+
+[
+  {
+    _id: ObjectId("62e0d5aae8175edb2c988400"),
+    name: 'John',
+    age: 23,
+    tech: [ 'React', 'JS' ]
+  },
+  {
+    _id: ObjectId("62e0d640e8175edb2c988403"),
+    name: 'Bide',
+    age: 26,
+    tech: [ 'JS' ]
+  },
+  {
+    _id: ObjectId("62e0d640e8175edb2c988404"),
+    name: 'Bush',
+    age: 27,
+    tech: [ 'JS', 'Redux' ]
+  }
+]
+
+web-17> db.users.drop()
+true
+
+web-17> db.users.insertMany([
+ {
+     "name": "John",
+     "age": 23,
+     "tech": ["React", "JS"],
+     "kills": [20, 30, 40]
+   },
+ {
+     "name": "Tim",
+     "age": 25,
+     "tech": ["Java", "Maven"],
+     "kills": [20, 30, 40]
+   },
+ {
+     "name": "Pam",
+     "age": 24,
+     "tech": ["Node"],
+     "kills": [15, 20, 10]
+   },
+ {
+     "name": "Bide",
+     "age": 26,
+     "tech": ["JS"],
+     "kills": [0, 100, 33]
+   },
+ {
+     "name": "Bush",
+     "age": 27,
+     "tech": ["JS", "Redux"],
+     "kills": [20, 50, 40]
+   }
+])
+
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("62e0d784e8175edb2c988405"),
+    '1': ObjectId("62e0d784e8175edb2c988406"),
+    '2': ObjectId("62e0d784e8175edb2c988407"),
+    '3': ObjectId("62e0d784e8175edb2c988408"),
+    '4': ObjectId("62e0d784e8175edb2c988409")
+  }
+}
+
+web-17> db.users.find({kills: {$elemMatch: {$eq: 100} }})
+
+[
+  {
+    _id: ObjectId("62e0d784e8175edb2c988408"),
+    name: 'Bide',
+    age: 26,
+    tech: [ 'JS' ],
+    kills: [ 0, 100, 33 ]
+  }
+]
+
+web-17> db.users.find({kills: {$elemMatch: {$eq: 20} }})
+
+[
+  {
+    _id: ObjectId("62e0d784e8175edb2c988405"),
+    name: 'John',
+    age: 23,
+    tech: [ 'React', 'JS' ],
+    kills: [ 20, 30, 40 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988406"),
+    name: 'Tim',
+    age: 25,
+    tech: [ 'Java', 'Maven' ],
+    kills: [ 20, 30, 40 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988407"),
+    name: 'Pam',
+    age: 24,
+    tech: [ 'Node' ],
+    kills: [ 15, 20, 10 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988409"),
+    name: 'Bush',
+    age: 27,
+    tech: [ 'JS', 'Redux' ],
+    kills: [ 20, 50, 40 ]
+  }
+]
+
+day-1 PART- 2 CONTINUATION
+
+web-17> db.users.find({kills: {$elemMatch: {$lte: 30, $gte: 5} }})
+
+[
+  {
+    _id: ObjectId("62e0d784e8175edb2c988405"),
+    name: 'John',
+    age: 23,
+    tech: [ 'React', 'JS' ],
+    kills: [ 20, 30, 40 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988406"),
+    name: 'Tim',
+    age: 25,
+    tech: [ 'Java', 'Maven' ],
+    kills: [ 20, 30, 40 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988407"),
+    name: 'Pam',
+    age: 24,
+    tech: [ 'Node' ],
+    kills: [ 15, 20, 10 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988409"),
+    name: 'Bush',
+    age: 27,
+    tech: [ 'JS', 'Redux' ],
+    kills: [ 20, 50, 40 ]
+  }
+]
+
+web-17> db.users.find({kills: {$elemMatch: {$gt: -1, $lt: 11} }})
+
+  {
+    _id: ObjectId("62e0d784e8175edb2c988407"),
+    name: 'Pam',
+    age: 24,
+    tech: [ 'Node' ],
+    kills: [ 15, 20, 10 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988408"),
+    name: 'Bide',
+    age: 26,
+    tech: [ 'JS' ],
+    kills: [ 0, 100, 33 ]
+  }
+]
+
+web-17> db.users.find({tech: {$regex: /^re/gi} })
+
+[
+  {
+    _id: ObjectId("62e0d784e8175edb2c988405"),
+    name: 'John',
+    age: 23,
+    tech: [ 'React', 'JS' ],
+    kills: [ 20, 30, 40 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988409"),
+    name: 'Bush',
+    age: 27,
+    tech: [ 'JS', 'Redux' ],
+    kills: [ 20, 50, 40 ]
+  }
+]
+
+web-17> db.users.updateOne({name: "Bush"}, {$inc: {age: -1} })
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+web-17> db.users.updateOne({name: "Bush"}, {$rename: {tech: "skills"} } )
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+web-17> db.users.updateOne({name: "Bush"}, {$min: {age: 25} })
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+web-17> db.users.find()
+
+[
+  {
+    _id: ObjectId("62e0d784e8175edb2c988405"),
+    name: 'John',
+    age: 23,
+    tech: [ 'React', 'JS' ],
+    kills: [ 20, 30, 40 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988406"),
+    name: 'Tim',
+    age: 25,
+    tech: [ 'Java', 'Maven' ],
+    kills: [ 20, 30, 40 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988407"),
+    name: 'Pam',
+    age: 24,
+    tech: [ 'Node' ],
+    kills: [ 15, 20, 10 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988408"),
+    name: 'Bide',
+    age: 26,
+    tech: [ 'JS' ],
+    kills: [ 0, 100, 33 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988409"),
+    name: 'Bush',
+    age: 25,
+    kills: [ 20, 50, 40 ],
+    skills: [ 'JS', 'Redux' ]
+  }
+]
+
+web-17> db.users.updateOne({name: "Bide"}, {$max: {age: 24} })
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+
+web-17> db.users.find()
+
+[
+  {
+    _id: ObjectId("62e0d784e8175edb2c988405"),
+    name: 'John',
+    age: 23,
+    tech: [ 'React', 'JS' ],
+    kills: [ 20, 30, 40 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988406"),
+    name: 'Tim',
+    age: 25,
+    tech: [ 'Java', 'Maven' ],
+    kills: [ 20, 30, 40 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988407"),
+    name: 'Pam',
+    age: 24,
+    tech: [ 'Node' ],
+    kills: [ 15, 20, 10 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988408"),
+    name: 'Bide',
+    age: 26,
+    tech: [ 'JS' ],
+    kills: [ 0, 100, 33 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988409"),
+    name: 'Bush',
+    age: 25,
+    kills: [ 20, 50, 40 ],
+    skills: [ 'JS', 'Redux' ]
+  }
+]
+
+
+day-1. continuation - PART - 3
+
+web-17> db.users.updateOne({name: "Bush"}, {$pop: {kills: -1}})
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+web-17> db.users.find()
+
+[
+  {
+    _id: ObjectId("62e0d784e8175edb2c988405"),
+    name: 'John',
+    age: 23,
+    tech: [ 'React', 'JS' ],
+    kills: [ 20, 30, 40 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988406"),
+    name: 'Tim',
+    age: 25,
+    tech: [ 'Java', 'Maven' ],
+    kills: [ 20, 30, 40 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988407"),
+    name: 'Pam',
+    age: 24,
+    tech: [ 'Node' ],
+    kills: [ 15, 20, 10 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988408"),
+    name: 'Bide',
+    age: 26,
+    tech: [ 'JS' ],
+    kills: [ 0, 100, 33 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988409"),
+    name: 'Bush',
+    age: 25,
+    kills: [ 50, 40 ],
+    skills: [ 'JS', 'Redux' ]
+  }
+]
+
+web-17> db.users.updateOne({name: "Bush"}, {$push: {kills: 70}})
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+web-17> db.users.find()
+
+[
+  {
+    _id: ObjectId("62e0d784e8175edb2c988405"),
+    name: 'John',
+    age: 23,
+    tech: [ 'React', 'JS' ],
+    kills: [ 20, 30, 40 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988406"),
+    name: 'Tim',
+    age: 25,
+    tech: [ 'Java', 'Maven' ],
+    kills: [ 20, 30, 40 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988407"),
+    name: 'Pam',
+    age: 24,
+    tech: [ 'Node' ],
+    kills: [ 15, 20, 10 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988408"),
+    name: 'Bide',
+    age: 26,
+    tech: [ 'JS' ],
+    kills: [ 0, 100, 33 ]
+  },
+  {
+    _id: ObjectId("62e0d784e8175edb2c988409"),
+    name: 'Bush',
+    age: 25,
+    kills: [ 50, 40, 70 ],
+    skills: [ 'JS', 'Redux' ]
+  }
+]
+
+web-17> db.version()
+5.0.9

@@ -1,0 +1,641 @@
+PART-1 - DATA 1
+
+test> use web-17
+switched to db web-17
+web-17> db.a2.findOne()
+{
+  _id: '01001',
+  city: 'AGAWAM',
+  loc: [ -72.622739, 42.070206 ],
+  pop: 15338,
+  state: 'MA'
+}
+web-17> db.d2.aggregate([ {$match: {size: "medium"}} ])
+[
+  {
+    _id: ObjectId("62e2c68f77f91745fde98bd6"),
+    id: 1,
+    name: 'Pepperoni',
+    size: 'medium',
+    price: 34,
+    quantity: 20
+  },
+  {
+    _id: ObjectId("62e2c6a977f91745fde98bd8"),
+    id: 2,
+    name: 'Cheese',
+    size: 'medium',
+    price: 60,
+    quantity: 30
+  },
+  {
+    _id: ObjectId("62e2c6e277f91745fde98bda"),
+    id: 3,
+    name: 'Cheese',
+    size: 'medium',
+    price: 80,
+    quantity: 40
+  },
+  {
+    _id: ObjectId("62e2c71f77f91745fde98be0"),
+    id: 6,
+    name: 'Vegan',
+    size: 'medium',
+    price: 23,
+    quantity: 100
+  }
+]
+web-17> db.d2.aggregate([ {$match: {price: {$lt: 15}} }  ])
+
+web-17> db.d2.aggregate([ {$match: {price: {$lt: 30}} }  ])
+[
+  {
+    _id: ObjectId("62e2c67077f91745fde98bd4"),
+    id: 0,
+    name: 'Pepperoni',
+    size: 'small',
+    price: 19,
+    quantity: 10
+  },
+  {
+    _id: ObjectId("62e2c71f77f91745fde98be0"),
+    id: 6,
+    name: 'Vegan',
+    size: 'medium',
+    price: 23,
+    quantity: 100
+  }
+]
+web-17> db.d2.aggregate([ {$match: {quantity: 10} } ])
+[
+  {
+    _id: ObjectId("62e2c67077f91745fde98bd4"),
+    id: 0,
+    name: 'Pepperoni',
+    size: 'small',
+    price: 19,
+    quantity: 10
+  }
+]
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {totQuantity: {$sum: "$quantity"}}} ])
+MongoServerError: a group specification must include an _id
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {totQuantity: "$quantity"}} ])
+MongoServerError: The field 'totQuantity' must be an accumulator object
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {totQuantity: {$sum: "$quantity"}}} ])
+MongoServerError: a group specification must include an _id
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$name", totQuantity: {$sum: "$quantity"}}} ])
+[
+  { _id: 'Pepperoni', totQuantity: 20 },
+  { _id: 'Cheese', totQuantity: 70 },
+  { _id: 'Vegan', totQuantity: 100 }
+]
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$id", totQuantity: {$sum: "$quantity"}}} ])
+[
+  { _id: 2, totQuantity: 30 },
+  { _id: 1, totQuantity: 20 },
+  { _id: 6, totQuantity: 100 },
+  { _id: 3, totQuantity: 40 }
+]
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$id"} ])
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:68)
+
+> 1 | db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$id"} ])
+    |                                                                     ^
+  2 |
+
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$id"}} ])
+[ { _id: 1 }, { _id: 2 }, { _id: 6 }, { _id: 3 } ]
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$name"}} ])
+[ { _id: 'Pepperoni' }, { _id: 'Vegan' }, { _id: 'Cheese' } ]
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$id", totPrice: {$avg: "$price"}}} ])
+[
+  { _id: 1, totPrice: 34 },
+  { _id: 2, totPrice: 60 },
+  { _id: 6, totPrice: 23 },
+  { _id: 3, totPrice: 80 }
+]
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$name", totPrice: {$avg: "$price"}}} ])
+[
+  { _id: 'Pepperoni', totPrice: 34 },
+  { _id: 'Vegan', totPrice: 23 },
+  { _id: 'Cheese', totPrice: 70 }
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$name", totPrice: {$avg: "$price"}}}, {$sort: {totPrice: 1}} ])
+[
+  { _id: 'Vegan', totPrice: 23 },
+  { _id: 'Pepperoni', totPrice: 34 },
+  { _id: 'Cheese', totPrice: 70 }
+]
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$name", totPrice: {$avg: "$price"}}}, {$sort: {totPrice: -1}} ])
+[
+  { _id: 'Cheese', totPrice: 70 },
+  { _id: 'Pepperoni', totPrice: 34 },
+  { _id: 'Vegan', totPrice: 23 }
+]
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$name", totPrice: {$avg: "$price"}}}, {$group: {_id: "total", final: {$avg: "$totPrice"}} } ])
+[ { _id: 'total', final: 42.333333333333336 } ]
+web-17> db.d2.aggregate([ {$group: {_id: "$size", totSum: {$sum: "$price"}}} ])
+[ { _id: 'small', totSum: 233 }, { _id: 'medium', totSum: 197 } ]
+web-17> db.d2.find()
+[
+  {
+    _id: ObjectId("62e2c67077f91745fde98bd4"),
+    id: 0,
+    name: 'Pepperoni',
+    size: 'small',
+    price: 19,
+    quantity: 10
+  },
+  {
+    _id: ObjectId("62e2c68f77f91745fde98bd6"),
+    id: 1,
+    name: 'Pepperoni',
+    size: 'medium',
+    price: 34,
+    quantity: 20
+  },
+  {
+    _id: ObjectId("62e2c6a977f91745fde98bd8"),
+    id: 2,
+    name: 'Cheese',
+    size: 'medium',
+    price: 60,
+    quantity: 30
+  },
+  {
+    _id: ObjectId("62e2c6e277f91745fde98bda"),
+    id: 3,
+    name: 'Cheese',
+    size: 'medium',
+    price: 80,
+    quantity: 40
+  },
+  {
+    _id: ObjectId("62e2c6f577f91745fde98bdc"),
+    id: 4,
+    name: 'Cheese',
+    size: 'small',
+    price: 90,
+    quantity: 25
+  },
+  {
+    _id: ObjectId("62e2c70777f91745fde98bde"),
+    id: 5,
+    name: 'Vegan',
+    size: 'small',
+    price: 68,
+    quantity: 20
+  },
+  {
+    _id: ObjectId("62e2c71f77f91745fde98be0"),
+    id: 6,
+    name: 'Vegan',
+    size: 'medium',
+    price: 23,
+    quantity: 100
+  },
+  {
+    _id: ObjectId("62e2c73f77f91745fde98be2"),
+    id: 7,
+    name: 'Vegan',
+    size: 'small',
+    price: 56,
+    quantity: 50
+  }
+]
+
+PART -2 - DATA 2
+
+web-17> db.d2.aggregate([{$group: {_id: "$state"}} ])
+[
+  { _id: 'NY' }, { _id: 'IN' },
+  { _id: 'ME' }, { _id: 'NE' },
+  { _id: 'MN' }, { _id: 'NH' },
+  { _id: 'MT' }, { _id: 'CT' },
+  { _id: 'WY' }, { _id: 'CA' },
+  { _id: 'ND' }, { _id: 'NJ' },
+  { _id: 'FL' }, { _id: 'IL' },
+  { _id: 'KS' }, { _id: 'RI' },
+  { _id: 'IA' }, { _id: 'AR' },
+  { _id: 'AK' }, { _id: 'HI' }
+]
+
+web-17> db.d2.aggregate([ {$group: {_id: "$state", totPop: {$sum: "$pop"}  }} ])
+[
+  { _id: 'MD', totPop: 4781379 },
+  { _id: 'IN', totPop: 5544136 },
+  { _id: 'ME', totPop: 1226648 },
+  { _id: 'NY', totPop: 17990402 },
+  { _id: 'MN', totPop: 4372982 },
+  { _id: 'NH', totPop: 1109252 },
+  { _id: 'MT', totPop: 798948 },
+  { _id: 'NE', totPop: 1578139 },
+  { _id: 'CT', totPop: 3287116 },
+  { _id: 'WY', totPop: 453528 },
+  { _id: 'CA', totPop: 29754890 },
+  { _id: 'ND', totPop: 638272 },
+  { _id: 'NJ', totPop: 7730188 },
+  { _id: 'KS', totPop: 2475285 },
+  { _id: 'AK', totPop: 544698 },
+  { _id: 'AR', totPop: 2350725 },
+  { _id: 'RI', totPop: 1003218 },
+  { _id: 'FL', totPop: 12686644 },
+  { _id: 'IA', totPop: 2776420 },
+  { _id: 'IL', totPop: 11427576 }
+]
+
+web-17> db.d2.aggregate([ {$group: {_id: "IL", totPop: {$sum: "$pop"}  }} ])
+[ { _id: 'IL', totPop: 248408400 } ]
+
+web-17> db.d2.aggregate([ {$group: {_id: "$state", totPop: {$sum: "$pop"}  }} ])
+[
+  { _id: 'MD', totPop: 4781379 },
+  { _id: 'IN', totPop: 5544136 },
+  { _id: 'NY', totPop: 17990402 },
+  { _id: 'ME', totPop: 1226648 },
+  { _id: 'MN', totPop: 4372982 },
+  { _id: 'NH', totPop: 1109252 },
+  { _id: 'MT', totPop: 798948 },
+  { _id: 'NE', totPop: 1578139 },
+  { _id: 'CT', totPop: 3287116 },
+  { _id: 'WY', totPop: 453528 },
+  { _id: 'CA', totPop: 29754890 },
+  { _id: 'ND', totPop: 638272 },
+  { _id: 'NJ', totPop: 7730188 },
+  { _id: 'KS', totPop: 2475285 },
+  { _id: 'AK', totPop: 544698 },
+  { _id: 'AR', totPop: 2350725 },
+  { _id: 'RI', totPop: 1003218 },
+  { _id: 'FL', totPop: 12686644 },
+  { _id: 'IA', totPop: 2776420 },
+  { _id: 'IL', totPop: 11427576 }
+]
+
+web-17> db.d2.aggregate([ {$group: {_id: "$state", totPop: {$sum: "$pop"} }}, {$sort: {totPop: -1}} ])
+[
+  { _id: 'CA', totPop: 29754890 },
+  { _id: 'NY', totPop: 17990402 },
+  { _id: 'TX', totPop: 16984601 },
+  { _id: 'FL', totPop: 12686644 },
+  { _id: 'PA', totPop: 11881643 },
+  { _id: 'IL', totPop: 11427576 },
+  { _id: 'OH', totPop: 10846517 },
+  { _id: 'MI', totPop: 9295297 },
+  { _id: 'NJ', totPop: 7730188 },
+  { _id: 'NC', totPop: 6628637 },
+  { _id: 'GA', totPop: 6478216 },
+  { _id: 'VA', totPop: 6181479 },
+  { _id: 'MA', totPop: 6016425 },
+  { _id: 'IN', totPop: 5544136 },
+  { _id: 'MO', totPop: 5110648 },
+  { _id: 'WI', totPop: 4891769 },
+  { _id: 'TN', totPop: 4876457 },
+  { _id: 'WA', totPop: 4866692 },
+  { _id: 'MD', totPop: 4781379 },
+  { _id: 'MN', totPop: 4372982 }
+]
+
+web-17> db.d2.aggregate([ {$group: {_id: "$state", totPop: {$sum: "$pop"} }}, {$match: {totPop: {$gt: 50000} }} ])
+[
+  { _id: 'NY', totPop: 17990402 },
+  { _id: 'IN', totPop: 5544136 },
+  { _id: 'ME', totPop: 1226648 },
+  { _id: 'NE', totPop: 1578139 },
+  { _id: 'MN', totPop: 4372982 },
+  { _id: 'NH', totPop: 1109252 },
+  { _id: 'MT', totPop: 798948 },
+  { _id: 'CT', totPop: 3287116 },
+  { _id: 'WY', totPop: 453528 },
+  { _id: 'CA', totPop: 29754890 },
+  { _id: 'ND', totPop: 638272 },
+  { _id: 'NJ', totPop: 7730188 },
+  { _id: 'FL', totPop: 12686644 },
+  { _id: 'IL', totPop: 11427576 },
+  { _id: 'KS', totPop: 2475285 },
+  { _id: 'RI', totPop: 1003218 },
+  { _id: 'IA', totPop: 2776420 },
+  { _id: 'AR', totPop: 2350725 },
+  { _id: 'AK', totPop: 544698 },
+  { _id: 'HI', totPop: 1108229 }
+]
+
+web-17> db.d2.aggregate([ {$group: {_id: "$state", totPop: {$sum: "$pop"} }}, {$match: {totPop: {$gt: 500000} }} ])
+[
+  { _id: 'MA', totPop: 6016425 },
+  { _id: 'VT', totPop: 562758 },
+  { _id: 'NC', totPop: 6628637 },
+  { _id: 'GA', totPop: 6478216 },
+  { _id: 'WI', totPop: 4891769 },
+  { _id: 'PA', totPop: 11881643 },
+  { _id: 'AL', totPop: 4040587 },
+  { _id: 'LA', totPop: 4217595 },
+  { _id: 'NM', totPop: 1515069 },
+  { _id: 'HI', totPop: 1108229 },
+  { _id: 'OR', totPop: 2842321 },
+  { _id: 'RI', totPop: 1003218 },
+  { _id: 'IA', totPop: 2776420 },
+  { _id: 'IL', totPop: 11427576 },
+  { _id: 'FL', totPop: 12686644 },
+  { _id: 'NJ', totPop: 7730188 },
+  { _id: 'ND', totPop: 638272 },
+  { _id: 'KS', totPop: 2475285 },
+  { _id: 'AR', totPop: 2350725 },
+  { _id: 'CT', totPop: 3287116 }
+]
+
+web-17> db.d2.aggregate([ {$group: { _id: { state: "$state", city: "$city" }} } ])
+[
+  { _id: { state: 'MA', city: 'ESSEX' } },
+  { _id: { state: 'NJ', city: 'NEWPORT' } },
+  { _id: { state: 'UT', city: 'ROOSEVELT' } },
+  { _id: { state: 'CA', city: 'SUTTER CREEK' } },
+  { _id: { state: 'ME', city: 'SAINT ALBANS' } },
+  { _id: { state: 'AR', city: 'CUSHMAN' } },
+  { _id: { state: 'CT', city: 'ROCKFALL' } },
+  { _id: { state: 'MI', city: 'NEW RICHMOND' } },
+  { _id: { state: 'IL', city: 'WINSLOW' } },
+  { _id: { state: 'MI', city: 'OSSEO' } },
+  { _id: { state: 'NY', city: 'LITTLE GENESEE' } },
+  { _id: { state: 'KY', city: 'DAVISPORT' } },
+  { _id: { state: 'NY', city: 'ELBRIDGE' } },
+  { _id: { state: 'NC', city: 'SHANNON' } },
+  { _id: { state: 'MO', city: 'GENTRY' } },
+  { _id: { state: 'UT', city: 'HINCKLEY' } },
+  { _id: { state: 'RI', city: 'WESTERLY' } },
+  { _id: { state: 'NY', city: 'LAWTONS' } },
+  { _id: { state: 'NH', city: 'NEWMARKET' } },
+  { _id: { state: 'TN', city: 'HOLLADAY' } }
+]
+
+web-17> db.d2.aggregate([ {$group: { _id: { state: "$state", city: "$city" }, pop: {$sum: "$pop"}} } ])
+[
+  { _id: { state: 'VA', city: 'FLINT HILL' }, pop: 276 },
+  { _id: { state: 'PA', city: 'ZELIENOPLE' }, pop: 18300 },
+  { _id: { state: 'NY', city: 'LAWYERSVILLE' }, pop: 91 },
+  { _id: { state: 'NY', city: 'BEMUS POINT' }, pop: 3591 },
+  { _id: { state: 'TN', city: 'VONORE' }, pop: 1541 },
+  { _id: { state: 'NJ', city: 'TOTOWA' }, pop: 10147 },
+  { _id: { state: 'GA', city: 'GLENN' }, pop: 7230 },
+  { _id: { state: 'MN', city: 'RUSHMORE' }, pop: 726 },
+  { _id: { state: 'IL', city: 'CARMI' }, pop: 8234 },
+  { _id: { state: 'MO', city: 'TROY' }, pop: 7636 },
+  { _id: { state: 'MO', city: 'CLARKTON' }, pop: 1672 },
+  { _id: { state: 'NJ', city: 'GARWOOD' }, pop: 4277 },
+  { _id: { state: 'MO', city: 'HOLT' }, pop: 1712 },
+  { _id: { state: 'OK', city: 'COWETA' }, pop: 9873 },
+  { _id: { state: 'TX', city: 'SWEENY' }, pop: 5077 },
+  { _id: { state: 'TX', city: 'SILVERTON' }, pop: 1297 },
+  { _id: { state: 'FL', city: 'MILTON' }, pop: 29495 },
+  { _id: { state: 'CO', city: 'ARBOLES' }, pop: 587 },
+  { _id: { state: 'CA', city: 'WHITE WATER' }, pop: 420 },
+  { _id: { state: 'CA', city: 'CLAREMONT' }, pop: 34096 }
+]
+
+
+
+
+
+// -------------------------------------------------------------------------------------------------------------------------
+
+SELF-PRACTISE LIVE CLASS
+
+
+
+Microsoft Windows [Version 10.0.22000.795]
+(c) Microsoft Corporation. All rights reserved.
+
+test> use web-17
+switched to db web-17
+web-17> db.a2.findOne()
+{
+  _id: '01001',
+  city: 'AGAWAM',
+  loc: [ -72.622739, 42.070206 ],
+  pop: 15338,
+  state: 'MA'
+}
+web-17> db.d2.aggregate([ {$match: {size: "medium"}} ])
+[
+  {
+    _id: ObjectId("62e2c68f77f91745fde98bd6"),
+    id: 1,
+    name: 'Pepperoni',
+    size: 'medium',
+    price: 34,
+    quantity: 20
+  },
+  {
+    _id: ObjectId("62e2c6a977f91745fde98bd8"),
+    id: 2,
+    name: 'Cheese',
+    size: 'medium',
+    price: 60,
+    quantity: 30
+  },
+  {
+    _id: ObjectId("62e2c6e277f91745fde98bda"),
+    id: 3,
+    name: 'Cheese',
+    size: 'medium',
+    price: 80,
+    quantity: 40
+  },
+  {
+    _id: ObjectId("62e2c71f77f91745fde98be0"),
+    id: 6,
+    name: 'Vegan',
+    size: 'medium',
+    price: 23,
+    quantity: 100
+  }
+]
+web-17> db.d2.aggregate([ {$match: {price: {$lt: 15}} }  ])
+
+web-17> db.d2.aggregate([ {$match: {price: {$lt: 30}} }  ])
+[
+  {
+    _id: ObjectId("62e2c67077f91745fde98bd4"),
+    id: 0,
+    name: 'Pepperoni',
+    size: 'small',
+    price: 19,
+    quantity: 10
+  },
+  {
+    _id: ObjectId("62e2c71f77f91745fde98be0"),
+    id: 6,
+    name: 'Vegan',
+    size: 'medium',
+    price: 23,
+    quantity: 100
+  }
+]
+web-17> db.d2.aggregate([ {$match: {quantity: 10} } ])
+[
+  {
+    _id: ObjectId("62e2c67077f91745fde98bd4"),
+    id: 0,
+    name: 'Pepperoni',
+    size: 'small',
+    price: 19,
+    quantity: 10
+  }
+]
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {totQuantity: {$sum: "$quantity"}}} ])
+MongoServerError: a group specification must include an _id
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {totQuantity: "$quantity"}} ])
+MongoServerError: The field 'totQuantity' must be an accumulator object
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {totQuantity: {$sum: "$quantity"}}} ])
+MongoServerError: a group specification must include an _id
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$name", totQuantity: {$sum: "$quantity"}}} ])
+[
+  { _id: 'Pepperoni', totQuantity: 20 },
+  { _id: 'Cheese', totQuantity: 70 },
+  { _id: 'Vegan', totQuantity: 100 }
+]
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$id", totQuantity: {$sum: "$quantity"}}} ])
+[
+  { _id: 2, totQuantity: 30 },
+  { _id: 1, totQuantity: 20 },
+  { _id: 6, totQuantity: 100 },
+  { _id: 3, totQuantity: 40 }
+]
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$id"} ])
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:68)
+
+> 1 | db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$id"} ])
+    |                                                                     ^
+  2 |
+
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$id"}} ])
+[ { _id: 1 }, { _id: 2 }, { _id: 6 }, { _id: 3 } ]
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$name"}} ])
+[ { _id: 'Pepperoni' }, { _id: 'Vegan' }, { _id: 'Cheese' } ]
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$id", totPrice: {$avg: "$price"}}} ])
+[
+  { _id: 1, totPrice: 34 },
+  { _id: 2, totPrice: 60 },
+  { _id: 6, totPrice: 23 },
+  { _id: 3, totPrice: 80 }
+]
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$name", totPrice: {$avg: "$price"}}} ])
+[
+  { _id: 'Pepperoni', totPrice: 34 },
+  { _id: 'Vegan', totPrice: 23 },
+  { _id: 'Cheese', totPrice: 70 }
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$name", totPrice: {$avg: "$price"}}}, {$sort: {totPrice: 1}} ])
+[
+  { _id: 'Vegan', totPrice: 23 },
+  { _id: 'Pepperoni', totPrice: 34 },
+  { _id: 'Cheese', totPrice: 70 }
+]
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$name", totPrice: {$avg: "$price"}}}, {$sort: {totPrice: -1}} ])
+[
+  { _id: 'Cheese', totPrice: 70 },
+  { _id: 'Pepperoni', totPrice: 34 },
+  { _id: 'Vegan', totPrice: 23 }
+]
+web-17> db.d2.aggregate([ {$match: {size: "medium"}}, {$group: {_id: "$name", totPrice: {$avg: "$price"}}}, {$group: {_id: "total", final: {$avg: "$totPrice"}} } ])
+[ { _id: 'total', final: 42.333333333333336 } ]
+web-17> db.d2.aggregate([ {$group: {_id: "$size", totSum: {$sum: "$price"}}} ])
+[ { _id: 'small', totSum: 233 }, { _id: 'medium', totSum: 197 } ]
+web-17> db.d2.find()
+[
+  {
+    _id: ObjectId("62e2c67077f91745fde98bd4"),
+    id: 0,
+    name: 'Pepperoni',
+    size: 'small',
+    price: 19,
+    quantity: 10
+  },
+web-17> db.a2.aggregate([ {$group: {_id: "$state", totPop: {$sum: "$pop"}  }}, {$match: {totPop: {$gte: 5000}}} ])
+[   _id: ObjectId("62e2c68f77f91745fde98bd6"),
+  { _id: 'NY', totPop: 17990402 },
+  { _id: 'IN', totPop: 5544136 },
+  { _id: 'ME', totPop: 1226648 },
+  { _id: 'NE', totPop: 1578139 },
+  { _id: 'NH', totPop: 1109252 },
+  { _id: 'MN', totPop: 4372982 },
+  { _id: 'MT', totPop: 798948 },
+  { _id: 'CT', totPop: 3287116 },45fde98bd8"),
+  { _id: 'WY', totPop: 453528 },
+  { _id: 'CA', totPop: 29754890 },
+  { _id: 'NJ', totPop: 7730188 },
+  { _id: 'ND', totPop: 638272 },
+  { _id: 'IL', totPop: 11427576 },
+  { _id: 'FL', totPop: 12686644 },
+  { _id: 'RI', totPop: 1003218 },
+  { _id: 'IA', totPop: 2776420 },45fde98bda"),
+  { _id: 'KS', totPop: 2475285 },
+  { _id: 'AR', totPop: 2350725 },
+  { _id: 'AK', totPop: 544698 },
+  { _id: 'PA', totPop: 11881643 }
+]   quantity: 40
+Type "it" for more
+web-17> db.a2.aggregate([ {$group: {_id: "$state", totPop: {$sum: "$pop"}  }}, {$match: {totPop: {$gte: 50000}}} ])
+[   _id: ObjectId("62e2c6f577f91745fde98bdc"),
+  { _id: 'NY', totPop: 17990402 },
+  { _id: 'IN', totPop: 5544136 },
+  { _id: 'ME', totPop: 1226648 },
+  { _id: 'NE', totPop: 1578139 },
+  { _id: 'NH', totPop: 1109252 },
+  { _id: 'MN', totPop: 4372982 },
+  { _id: 'MT', totPop: 798948 },
+  { _id: 'CT', totPop: 3287116 },45fde98bde"),
+  { _id: 'WY', totPop: 453528 },
+  { _id: 'CA', totPop: 29754890 },
+  { _id: 'NJ', totPop: 7730188 },
+  { _id: 'ND', totPop: 638272 },
+  { _id: 'IL', totPop: 11427576 },
+  { _id: 'FL', totPop: 12686644 },
+  { _id: 'RI', totPop: 1003218 },
+  { _id: 'IA', totPop: 2776420 },45fde98be0"),
+  { _id: 'KS', totPop: 2475285 },
+  { _id: 'AR', totPop: 2350725 },
+  { _id: 'AK', totPop: 544698 },
+  { _id: 'PA', totPop: 11881643 }
+]   quantity: 100
+Type "it" for more
+web-17> db.a2.aggregate([ {$group: {_id: "$state", totPop: {$sum: "$pop"}  }}, {$match: {totPop: {$gte: 5000000}}} ])
+[   _id: ObjectId("62e2c73f77f91745fde98be2"),
+  { _id: 'IN', totPop: 5544136 },
+  { _id: 'NY', totPop: 17990402 },
+  { _id: 'CA', totPop: 29754890 },
+  { _id: 'NJ', totPop: 7730188 },
+  { _id: 'FL', totPop: 12686644 },
+  { _id: 'IL', totPop: 11427576 },
+  { _id: 'PA', totPop: 11881643 },
+  { _id: 'NC', totPop: 6628637 },
+  { _id: 'GA', totPop: 6478216 },
+  { _id: 'MA', totPop: 6016425 },
+  { _id: 'VA', totPop: 6181479 },
+  { _id: 'TX', totPop: 16984601 },
+  { _id: 'OH', totPop: 10846517 },
+  { _id: 'MI', totPop: 9295297 },
+  { _id: 'MO', totPop: 5110648 }
+]eb-17> db.a2.aggregate([ {$group: {_id: "$state"}}])
+web-17> db.a2.aggregate([ {$group: {_id: "$state", totPop: {$sum: "$pop"}  }}, {$match: {totPop: {$gte: 50000000}}} ])
+  { _id: 'MD' }, { _id: 'IN' },
+web-17> db.a2.aggregate([ {$group: {_id: "$state", totPop: {$sum: "$pop"}  }}, {$match: {totPop: {$gt: 5000000}}} ])
+[ { _id: 'MN' }, { _id: 'NH' },
+  { _id: 'IN', totPop: 5544136 },
+  { _id: 'NY', totPop: 17990402 },
+  { _id: 'CA', totPop: 29754890 },
+  { _id: 'NJ', totPop: 7730188 },
+  { _id: 'FL', totPop: 12686644 },
+  { _id: 'IL', totPop: 11427576 },
+  { _id: 'PA', totPop: 11881643 },
+  { _id: 'NC', totPop: 6628637 },
+  { _id: 'MA', totPop: 6016425 },
+  { _id: 'GA', totPop: 6478216 },: {_id: "$state", $sum: "$pop"  } } ])
+  { _id: 'VA', totPop: 6181479 },' must be an accumulator object
+  { _id: 'TX', totPop: 16984601 }, {_id: "$state", totPop: {$sum: "$pop"}  } } ])
+  { _id: 'OH', totPop: 10846517 },
+  { _id: 'MI', totPop: 9295297 },,
+  { _id: 'MO', totPop: 5110648 },
+] { _id: 'ME', totPop: 1226648 },
+web-17> db.d2.aggregate([ {$group: {_id: "$state", totPop: {$sum: "$pop"} }}, {$match: {totPop: {$gte: 6000000}}}, {$skip: 1} ])
+
+web-17> db.d2.aggregate([ {$group: {_id: "$state", totPop: {$sum: "$pop"} }}, {$match: {totPop: {$gte: 6000000}}}, {$skip: 1} ])
