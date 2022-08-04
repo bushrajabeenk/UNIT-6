@@ -10,20 +10,23 @@ app.use(express.json());
 app.post("/signup", async (req, res) => {
   const { username, password, role } = req.body;
 
-  const user = await new UserModel({
-    username: username,
+  const user = new UserModel({
+    username,
     age: 12,
-    hashPassword: password,
-    role: "student", // role from frontend
+    hash: password,
+    role, // role from frontend
   });
 
   await user.save();
 
-  const token = jwt.sign({
-    id: user._id,
-    username: user.username,
-    role: user.role,
-  });
+  const token = jwt.sign(
+    {
+      id: user._id,
+      username: user.username,
+      role: user.role,
+    },
+    "SECRET"
+  );
   return res.send({ token });
 });
 
