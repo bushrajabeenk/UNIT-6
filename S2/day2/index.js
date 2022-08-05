@@ -64,14 +64,22 @@ app.post("/newToken", (req, res) => {
   }
 });
 
-// app.get("/profile/:id", async (req, res) => {
-//   const { id } = req.params;
-//   const token = req.headers["authorization"].split(" ")[1];
+app.get("/profile/:id", async (req, res) => {
+  const { id } = req.params;
 
-//   try{
+  const token = req.headers["authorization"].split(" ")[1];
+  try {
+    const verification = jwt.verify(token, "SECRET");
+    console.log(verification);
 
-//   }
-// });
+    if (verification) {
+      const user = await UserModel.findOne({ _id: id });
+      res.send({ message: "Profile page", user });
+    }
+  } catch {
+    return res.status(401).send("Unauthorized");
+  }
+});
 
 mongoose.connect("mongodb://localhost:27017/web-17").then(() => {
   app.listen(8080, () => {
