@@ -33,7 +33,10 @@ app.post("/login", async (req, res) => {
       age: user.age,
       id: user._id,
     },
-    "SECRET"
+    "SECRET",
+    {
+      expiresIn: "20s",
+    }
   );
   return res.send({ message: "Login successfull", token: token });
 });
@@ -41,13 +44,17 @@ app.post("/login", async (req, res) => {
 app.get("/profile/:id", async (req, res) => {
   const { id } = req.params;
   // earlier this was done
+  // this would be no privacy/ no protection
   // const user = await UserModel.findOne({ _id: id });
   // res.send({ message: "Profile page", user });
 
+  // Bearer is 0th key, token is 1st key
+  // the below code ie jwt gives privacy to protected routes
   const token = req.headers["authorization"].split(" ")[1];
   try {
     const verification = jwt.verify(token, "SECRET");
     console.log(verification);
+
     if (verification) {
       const user = await UserModel.findOne({ _id: id });
       res.send({ message: "Profile page", user });
