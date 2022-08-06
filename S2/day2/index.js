@@ -73,9 +73,9 @@ app.post("/newToken", (req, res) => {
     const validation = jwt.verify(refreshToken, "REFRESHTOKEN");
 
     if (validation) {
-      // refreshToken is valid, hence create a new token
-      const newPrimaryToken = jwt.sign({}, "SECRET", { expiresIn: "1 hour" });
-      return res.status(200).send({ token: newPrimaryToken });
+      // refreshToken is valid, hence create a new access token
+      const newAccessToken = jwt.sign({}, "SECRET", { expiresIn: "1 hour" });
+      return res.status(200).send({ token: newAccessToken });
     } else {
       return res.status(401).send({ message: "Unauthorized" });
     }
@@ -88,13 +88,15 @@ app.post("/newToken", (req, res) => {
 
 app.get("/profile/:id", async (req, res) => {
   const { id } = req.params;
-
-  const token = req.headers["authorization"].split(" ")[1];
+  // get the newly created access token from the headers
+  const newAccessToken = req.headers["authorization"].split(" ")[1];
   try {
-    const verification = jwt.verify(token, "SECRET");
+    // verify the newly created access token
+    const verification = jwt.verify(newAccessToken, "SECRET");
     console.log(verification);
 
     if (verification) {
+      // if verified get the user details using the new token using id
       const user = await UserModel.findOne({ _id: id });
       res.status(200).send({ message: "Profile page", user });
     }
