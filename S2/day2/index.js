@@ -26,7 +26,6 @@ app.post("/login", async (req, res) => {
     // 401 is unauthorized
     return res.status(401).send("Please enter valid credentials");
   }
-
   const accessToken = jwt.sign(
     {
       username: user.username,
@@ -75,7 +74,7 @@ app.post("/newToken", (req, res) => {
 app.get("/profile/:id", async (req, res) => {
   const { id } = req.params;
 
-  const accessToken = req.headers["authorization"].split(" ")[1];
+  const token = req.headers["authorization"].split(" ")[1];
   try {
     const verification = jwt.verify(token, "SECRET");
     console.log(verification);
