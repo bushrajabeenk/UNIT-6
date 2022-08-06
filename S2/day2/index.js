@@ -29,6 +29,7 @@ app.post("/login", async (req, res) => {
     // 401 is unauthorized
     return res.status(401).send("Please enter valid credentials");
   }
+
   // accessToken is created
   const accessToken = jwt.sign(
     {
@@ -67,6 +68,7 @@ app.post("/newToken", (req, res) => {
   if (!refreshToken) {
     return res.status(401).send({ message: "User is not authorized" });
   }
+
   // if refreshToken is valid, using the refreshToken, create a new access token
   try {
     // verify the refreshToken
@@ -89,6 +91,7 @@ app.get("/profile/:id", async (req, res) => {
   const { id } = req.params;
   // get the newly created access token from the headers
   const newAccessToken = req.headers["authorization"].split(" ")[1];
+  
   try {
     // verify the newly created access token
     const verification = jwt.verify(newAccessToken, "SECRET");
