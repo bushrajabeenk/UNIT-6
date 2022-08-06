@@ -19,6 +19,9 @@ app.post("/signup", (req, res) => {
   return res.send("Signup successfull");
 });
 
+//--------------------------------------------------------------------------------------------------------------------------------------------
+
+// created 2 tokens, accessToken and refreshToken
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   const user = await UserModel.findOne({ username, password });
@@ -26,6 +29,7 @@ app.post("/login", async (req, res) => {
     // 401 is unauthorized
     return res.status(401).send("Please enter valid credentials");
   }
+  // accessToken is created
   const accessToken = jwt.sign(
     {
       username: user.username,
@@ -39,6 +43,7 @@ app.post("/login", async (req, res) => {
   );
   //   return res.send({ message: "Login successfull", accessToken: accessToken });
   // not necessary to give the user details once again in refresh Token
+  // refreshToken is created
   const refreshToken = jwt.sign({}, "REFRESHTOKEN", { expiresIn: "7 days" });
 
   return res.status(200).send({
@@ -48,28 +53,38 @@ app.post("/login", async (req, res) => {
   });
 });
 
+//--------------------------------------------------------------------------------------------------------------------------------------------
+
 // 7c733bb5e3e5ab2e2dbd99746277babfc0331978
 
 app.post("/isTokenValid", () => {});
 
+//--------------------------------------------------------------------------------------------------------------------------------------------
+
 app.post("/newToken", (req, res) => {
+  // get the refreshToken from the headers
   const refreshToken = req.headers["authorization"].split(" ")[1];
   if (!refreshToken) {
     return res.status(401).send({ message: "User is not authorized" });
   }
 
+  // if refreshToken is valid, using the refreshToken, create a temporary token
   try {
     const validation = jwt.verify(refreshToken, "REFRESHTOKEN");
+
     if (validation) {
+      // refreshToken is valid, hence create a new token
       const newPrimaryToken = jwt.sign({}, "SECRET", { expiresIn: "1 hour" });
-      return res.send({ token: newPrimaryToken });
+      return res.status(200).send({ token: newPrimaryToken });
     } else {
       return res.status(401).send({ message: "Unauthorized" });
     }
   } catch {
-    return res.status().send({ message: "Error" });
+    return res.status(401).send({ message: "Error" });
   }
 });
+
+//--------------------------------------------------------------------------------------------------------------------------------------------
 
 app.get("/profile/:id", async (req, res) => {
   const { id } = req.params;
@@ -87,6 +102,8 @@ app.get("/profile/:id", async (req, res) => {
     return res.status(401).send("Unauthorized");
   }
 });
+
+//--------------------------------------------------------------------------------------------------------------------------------------------
 
 mongoose.connect("mongodb://localhost:27017/web-17").then(() => {
   app.listen(8080, () => {
