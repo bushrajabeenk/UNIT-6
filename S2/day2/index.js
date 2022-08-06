@@ -8,9 +8,6 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-const CLIENT_ID = "6ce47bfc4056fb424104";
-const CLIENT_SECRET = "7c733bb5e3e5ab2e2dbd99746277babfc0331978";
-
 app.post("/signup", (req, res) => {
   const { username, password, age } = req.body;
   const user = new UserModel({
@@ -30,7 +27,7 @@ app.post("/login", async (req, res) => {
     return res.status(401).send("Please enter valid credentials");
   }
 
-  const token = jwt.sign(
+  const accessToken = jwt.sign(
     {
       username: user.username,
       age: user.age,
@@ -38,14 +35,14 @@ app.post("/login", async (req, res) => {
     },
     "SECRET"
   );
-  //   return res.send({ message: "Login successfull", token: token });
+  //   return res.send({ message: "Login successfull", accessToken: accessToken });
 
-  // not necessary to give the user details once again in refresh token
+  // not necessary to give the user details once again in refresh Token
   const refreshToken = jwt.sign({}, "REFRESHTOKEN", { expiresIn: "7 days" });
 
   return res.send({
     message: "Login successfull",
-    token: token,
+    accessToken: accessToken,
     refreshToken: refreshToken,
   });
 });
@@ -60,14 +57,14 @@ app.post("/newToken", (req, res) => {
   const validation = jwt.verify(refreshToken, "REFRESHTOKEN");
   if (validation) {
     const newPrimaryToken = jwt.sign({}, "SECRET", { expiresIn: "1 hour" });
-    return res.send({ token: newPrimaryToken });
+    return res.send({ accessToken: newPrimaryToken });
   }
 });
 
 app.get("/profile/:id", async (req, res) => {
   const { id } = req.params;
 
-  const token = req.headers["authorization"].split(" ")[1];
+  const accessToken = req.headers["authorization"].split(" ")[1];
   try {
     const verification = jwt.verify(token, "SECRET");
     console.log(verification);
