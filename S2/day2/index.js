@@ -33,14 +33,16 @@ app.post("/login", async (req, res) => {
       age: user.age,
       id: user._id,
     },
-    "SECRET"
+    "SECRET",
+    {
+      expiresIn: "1m",
+    }
   );
   //   return res.send({ message: "Login successfull", accessToken: accessToken });
-
   // not necessary to give the user details once again in refresh Token
   const refreshToken = jwt.sign({}, "REFRESHTOKEN", { expiresIn: "7 days" });
 
-  return res.send({
+  return res.status(200).send({
     message: "Login successfull",
     accessToken: accessToken,
     refreshToken: refreshToken,
@@ -53,11 +55,20 @@ app.post("/isTokenValid", () => {});
 
 app.post("/newToken", (req, res) => {
   const refreshToken = req.headers["authorization"].split(" ")[1];
+  if (!refreshToken) {
+    return res.status(401).send({ message: "User is not authorized" });
+  }
 
-  const validation = jwt.verify(refreshToken, "REFRESHTOKEN");
-  if (validation) {
-    const newPrimaryToken = jwt.sign({}, "SECRET", { expiresIn: "1 hour" });
-    return res.send({ accessToken: newPrimaryToken });
+  try {
+    const validation = jwt.verify(refreshToken, "REFRESHTOKEN");
+    if (validation) {
+      const newPrimaryToken = jwt.sign({}, "SECRET", { expiresIn: "1 hour" });
+      return res.send({ token: newPrimaryToken });
+    } else {
+      return res.status(401).send({ message: "Unauthorized" });
+    }
+  } catch {
+    return res.status().send({ message: "Error" });
   }
 });
 
