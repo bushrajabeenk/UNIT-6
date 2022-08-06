@@ -33,14 +33,15 @@ app.post("/login", async (req, res) => {
       age: user.age,
       id: user._id,
     },
-    "SECRET",
-    {
-      expiresIn: "20s",
-    }
+    "SECRET"
+    // {
+    //   expiresIn: "20s",
+    // }
   );
   return res.send({ message: "Login successfull", token: token });
 });
 
+// verify the token
 app.get("/profile/:id", async (req, res) => {
   const { id } = req.params;
   // earlier this was done
@@ -57,7 +58,7 @@ app.get("/profile/:id", async (req, res) => {
 
     if (verification) {
       const user = await UserModel.findOne({ _id: id });
-      res.send({ message: "Profile page", user });
+      res.status(200).send({ message: "Profile page", user });
     }
   } catch {
     return res.status(401).send("Unauthorized");
