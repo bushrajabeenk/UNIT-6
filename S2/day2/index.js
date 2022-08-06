@@ -81,7 +81,7 @@ app.get("/profile/:id", async (req, res) => {
 
     if (verification) {
       const user = await UserModel.findOne({ _id: id });
-      res.send({ message: "Profile page", user });
+      res.status(200).send({ message: "Profile page", user });
     }
   } catch {
     return res.status(401).send("Unauthorized");
