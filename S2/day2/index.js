@@ -67,12 +67,11 @@ app.post("/newToken", (req, res) => {
   if (!refreshToken) {
     return res.status(401).send({ message: "User is not authorized" });
   }
-
-  // if refreshToken is valid, using the refreshToken, create a temporary token
+  // if refreshToken is valid, using the refreshToken, create a new access token
   try {
-    const validation = jwt.verify(refreshToken, "REFRESHTOKEN");
-
-    if (validation) {
+    // verify the refreshToken
+    const verification = jwt.verify(refreshToken, "REFRESHTOKEN");
+    if (verification) {
       // refreshToken is valid, hence create a new access token
       const newAccessToken = jwt.sign({}, "SECRET", { expiresIn: "1 hour" });
       return res.status(200).send({ token: newAccessToken });
