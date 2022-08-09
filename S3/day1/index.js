@@ -39,6 +39,10 @@ wss.on("listening", () => {
   console.log("Server started, listening for new connections");
 });
 
+// when client establishes a connection with server
 wss.on("connection", (ws) => {
   console.log("Got new connection");
+  ws.on("message", (data) => {
+    console.log("Socket sent message:", data.toString("utf-8"));
+  });
 });
