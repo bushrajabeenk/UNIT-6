@@ -13,10 +13,20 @@ emmitter.on("logout", function () {
   console.log("Someone logged out");
 });
 
-setTimeout(() => {
-  emmitter.emit("greet");
+// setTimeout(() => {
+//   emmitter.emit("greet");
+// });
+
+// setTimeout(() => {
+//   emmitter.emit("logout");
+// }, 3000);
+
+const stream = createReadStream("test.txt");
+
+stream.on("data", (data) => {
+  console.log(data.toString("utf-8"));
 });
 
-setTimeout(() => {
-  emmitter.emit("logout");
+stream.on("end", () => {
+  console.log("finished file reading");
 });
