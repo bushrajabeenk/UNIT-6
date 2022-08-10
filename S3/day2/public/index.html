@@ -44,37 +44,37 @@
 
     <script>
       const ws = io();
-      const form = document.getElementById("forms");
-      const input = document.getElementById("input");
-      const messagesDiv = document.getElementById("messages");
+      // const form = document.getElementById("forms");
+      // const input = document.getElementById("input");
+      // const messagesDiv = document.getElementById("messages");
 
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
+      // form.addEventListener("submit", (e) => {
+      //   e.preventDefault();
 
-        const textMessage = input.value;
-        // my custom event
-        ws.emit("new message", textMessage);
-      });
+      //   const textMessage = input.value;
+      //   // my custom event
+      //   ws.emit("new message", textMessage);
+      // });
 
-      ws.on("new message", (msg) => {
-        const span = document.createElement("div");
-        span.innerText = msg;
-        messagesdiv.appendChild(span);
-      });
+      // ws.on("new message", (msg) => {
+      //   const span = document.createElement("div");
+      //   span.innerText = msg;
+      //   messagesdiv.appendChild(span);
+      // });
 
-      ws.on("history", (hs) => {
-        console.log("History", hs);
-        if (hs?.length > 0) {
-          // for()
-          const span = document.createElement("div");
-          span.innerText = "new user joined chat";
-          messagesdiv.appendChild(span);
-        }
-      });
+      // ws.on("history", (hs) => {
+      //   console.log("History", hs);
+      //   if (hs?.length > 0) {
+      //     // for()
+      //     const span = document.createElement("div");
+      //     span.innerText = "new user joined chat";
+      //     messagesdiv.appendChild(span);
+      //   }
+      // });
 
-      ws.on("message", function (msg) {
-        console.log("Server said:", msg);
-      });
+      // ws.on("message", function (msg) {
+      //   console.log("Server said:", msg);
+      // });
     </script>
   </body>
 </html>
