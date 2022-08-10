@@ -32,10 +32,20 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const ws = io();
+      const form = document.getElementById("forms");
+      const input = document.getElementById("input");
 
-      ws.on("message", function (msg) {
-        console.log("Server said:", msg);
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const textMessage = input.value;
+        // my custom event 
+        ws.emit("new message", textMessage);
       });
+
+      //   ws.on("message", function (msg) {
+      //     console.log("Server said:", msg);
+      //   });
     </script>
   </body>
 </html>

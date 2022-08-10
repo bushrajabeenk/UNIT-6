@@ -9,7 +9,11 @@ const wss = new Server(webServer);
 
 wss.on("connection", (ws) => {
   console.log("New user joined");
-  ws.send("hello user");
+
+  ws.on("new message", (msgg) => {
+    console.log("Got new message", msgg);
+  });
+  //   ws.send("hello user");
 });
 
 app.use(express.urlencoded({ extended: true }));
