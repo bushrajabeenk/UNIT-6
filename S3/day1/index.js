@@ -1,6 +1,6 @@
 // 1. server needs to send data without client making requests
 // 2. data constantly chnaging stream 
-// 3. 
+// Node.js internal package called emitter
 
 // const { EventEmitter } = require("events");
 
