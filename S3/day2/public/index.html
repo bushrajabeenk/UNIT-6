@@ -43,7 +43,13 @@
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
+      // part-1
       const ws = io();
+      ws.on("message", function (msg) {
+        console.log("Server said:", msg);
+      });
+
+      // part-2
       // const form = document.getElementById("forms");
       // const input = document.getElementById("input");
       // const messagesDiv = document.getElementById("messages");
@@ -72,9 +78,9 @@
       //   }
       // });
 
-      ws.on("message", function (msg) {
-        console.log("Server said:", msg);
-      });
+      // ws.on("message", function (msg) {
+      //   console.log("Server said:", msg);
+      // });
     </script>
   </body>
 </html>
