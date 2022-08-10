@@ -63,6 +63,7 @@ const history = [];
 
 wss.on("connection", (ws) => {
   console.log("New user joined");
+
   // every single socket except current socket
   ws.broadcast.emit("new User");
 
@@ -70,9 +71,12 @@ wss.on("connection", (ws) => {
 
   ws.on("new message", (msgg) => {
     console.log("Got new message", msgg);
+
     history.push(msgg);
+
     // use ws to get the message on all the users except the sender user
-    ws.emit("new message", msgg);
+    // ws.emit("new message", msgg);
+
     // use wss to get the message on all the users including itself
     wss.emit("new message", msgg);
   });
