@@ -1,3 +1,7 @@
+// 1. server needs to send data without client making requests
+// 2. data constantly chnaging stream 
+// 3. 
+
 // const { EventEmitter } = require("events");
 
 // const emmitter = new EventEmitter();
