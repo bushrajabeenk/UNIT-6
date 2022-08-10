@@ -5,9 +5,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      .input {
+        width: 100%;
+      }
+      .container {
+        width: 400px;
+        display: flex;
+      }
+      .forms {
+        display: flex;
+        gap: 10px;
+      }
+    </style>
   </head>
   <body>
     <li></li>
-    <form><input type="text" placeholder="Enter some text" /></form>
+    <div class="messages"></div>
+    <div class="container">
+      <form class="forms">
+        <input type="text" class="input" placeholder="Enter some text" />
+        <button class="send">Send</button>
+      </form>
+    </div>
   </body>
 </html>
