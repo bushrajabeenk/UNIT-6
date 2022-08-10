@@ -28,5 +28,14 @@
         <button class="send">Send</button>
       </form>
     </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const ws = io();
+
+      ws.on("message", function (msg) {
+        console.log("Server said:", msg);
+      });
+    </script>
   </body>
 </html>
