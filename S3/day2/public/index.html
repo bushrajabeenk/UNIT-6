@@ -65,16 +65,16 @@
       ws.on("history", (hs) => {
         console.log("History", hs);
         if (hs?.length > 0) {
-            // for()
+          // for()
           const span = document.createElement("div");
           span.innerText = "new user joined chat";
           messagesdiv.appendChild(span);
         }
       });
 
-        ws.on("message", function (msg) {
-          console.log("Server said:", msg);
-        });
+      ws.on("message", function (msg) {
+        console.log("Server said:", msg);
+      });
     </script>
   </body>
 </html>
