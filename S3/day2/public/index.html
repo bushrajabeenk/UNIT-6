@@ -4,41 +4,44 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Chatter</title>
     <style>
-      .input {
-        width: 100%;
-      }
-      .messages {
-        display: flex;
-        flex-direction: column;
+      body {
+        width: 100vw;
+        height: 100vh;
       }
       .container {
         width: 400px;
         display: flex;
       }
+      .messages {
+        display: flex;
+        flex-direction: column;
+      }
       .forms {
         display: flex;
         gap: 10px;
-        position: fixed;
+        /* position: fixed;
         bottom: 0;
         width: 80%;
-        padding: 10px;
+        padding: 10px; */
+      }
+      .input {
+        width: 100%;
       }
     </style>
   </head>
   <body>
-    <li></li>
-
     <div class="container">
-      <div id="messages"></div>
-      <form id="forms">
-        <input type="text" id="input" placeholder="Enter some text" />
+      <div class="messages"></div>
+      <form class="forms">
+        <input type="text" class="input" />
         <button class="send">Send</button>
       </form>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
+
     <script>
       const ws = io();
       const form = document.getElementById("forms");
@@ -62,16 +65,16 @@
       ws.on("history", (hs) => {
         console.log("History", hs);
         if (hs?.length > 0) {
-            for()
+            // for()
           const span = document.createElement("div");
           span.innerText = "new user joined chat";
           messagesdiv.appendChild(span);
         }
       });
 
-      //   ws.on("message", function (msg) {
-      //     console.log("Server said:", msg);
-      //   });
+        ws.on("message", function (msg) {
+          console.log("Server said:", msg);
+        });
     </script>
   </body>
 </html>

@@ -1,7 +1,7 @@
 const express = require("express");
 const { Server } = require("socket.io");
 
-const app = express(); // e
+const app = express(); // express only for features
 
 const webServer = require("http").createServer(app);
 
@@ -36,6 +36,7 @@ wss.on("connection", (ws) => {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// sendFile is express operation, not fs operation
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
