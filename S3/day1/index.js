@@ -3,6 +3,7 @@
 // Node.js internal package called emitter
 
 // const { EventEmitter } = require("events");
+// events is a nodejs module
 
 // const emmitter = new EventEmitter();
 
