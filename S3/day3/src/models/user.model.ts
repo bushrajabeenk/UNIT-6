@@ -4,5 +4,5 @@ type User = {
   name: String;
   profile: String;
   email: String;
-  karma: String;
+  karma: String; // points
 };
