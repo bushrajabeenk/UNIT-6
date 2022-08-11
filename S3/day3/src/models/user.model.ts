@@ -2,7 +2,17 @@ import { Schema, model } from "mongoose";
 
 type User = {
   name: String;
-  profile: String;
+  profilepic: String;
   email: String;
-  karma: String; // points
+  karma: Number; // points
 };
+
+const UserSchema = new Schema<User>({
+  name: String,
+  profilepic: String,
+  email: String,
+  karma: String,
+});
+
+const UserModel = model("user", UserSchema);
+export { UserModel };
