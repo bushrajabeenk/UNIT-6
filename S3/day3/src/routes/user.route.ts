@@ -9,8 +9,8 @@ UserRouter.post("/", (req, res) => {
 
 UserRouter.get("/:id", (req, res) => {
   const { id } = req.params;
-  const user = UserModel.find({ id });
-  res.send("User details are: 1234");
+  const user = UserModel.find({ _id: id });
+  res.send(user);
 });
 
 UserRouter.delete("/:id", (req, res) => {
