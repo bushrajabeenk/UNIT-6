@@ -1,9 +1,8 @@
 import express from "express";
-
+import { UserRouter } from "./routes/user.route";
 const app = express();
-app.get("/", (req, res) => {
-  res.send("Hello");
-});
+
+app.use("/users", UserRouter);
 
 app.listen(3000, () => {
   console.log("Server started at 3000");
