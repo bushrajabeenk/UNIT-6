@@ -9,7 +9,7 @@ UserRouter.post("/", (req, res) => {
 
 UserRouter.get("/:id", (req, res) => {
   const { id } = req.params;
-  const user = UserModel.find();
+  const user = UserModel.find({ id });
   res.send("User details are: 1234");
 });
 
