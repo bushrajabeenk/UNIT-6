@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { getUserById } from "../controllers/user.controller";
 import { UserModel } from "../models/user.model";
 
 export const UserRouter = Router();
@@ -9,8 +10,8 @@ UserRouter.post("/", (req, res) => {
 
 UserRouter.get("/:id", (req, res) => {
   const { id } = req.params;
-  const user = UserModel.find({ _id: id });
-  res.send(user);
+  const user = getUserById(id);
+  return res.send(user);
 });
 
 UserRouter.delete("/:id", (req, res) => {

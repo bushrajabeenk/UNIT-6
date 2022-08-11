@@ -4,3 +4,8 @@ export async function getAllUsers() {
   const usersList = await UserModel.find();
   return usersList;
 }
+
+export async function getUserById(id: String) {
+  const user = await UserModel.findById(id);
+  return user;
+}
