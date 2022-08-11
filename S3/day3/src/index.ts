@@ -3,7 +3,7 @@ import { UserRouter } from "./routes/user.route";
 import mongoose from "mongoose";
 import config from "config";
 
-//console.log(process.env);
+console.log(process.env);
 
 const app = express();
 
