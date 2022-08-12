@@ -1,11 +1,15 @@
-console.log("before");
+const foo = () => {
+  setTimeout(bar, 0);
+  console.log("foo");
+  new Promise((resolve, reject) => {
+    resolve("should be right after baz, before bar");
+  })
+    .then((resolve) => console.log(resolve))
+    .then((resolve) => console.log("8888******"));
+  baz();
+};
 
-async function fetch() {
-  console.log("inside fetch");
-}
+const add = () => console.log("add", 2 + 3);
 
-// fetch("").then(() => {
-//   console.log("Fetch done");
-// });
-
-console.log("after");
+add();
+foo();
