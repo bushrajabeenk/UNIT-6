@@ -17,7 +17,7 @@ app.use(express.json());
 
 // sendFile is express operation, not OS- file/fs operation
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/public/b.html");
+  res.sendFile(__dirname + "/public/c.html");
 });
 
 webServer.listen(8080, () => {
