@@ -1,4 +1,5 @@
 //reading a file through stream
+const { createReadStream } = require("fs");
 const stream = createReadStream("test.txt");
 
 stream.on("data", (data) => {
@@ -9,6 +10,6 @@ stream.on("data", (data) => {
   console.log(data.toString("utf-8"));
 });
 
-// stream.on("end", () => {
-//   console.log("finished file reading");
-// });
+stream.on("end", () => {
+  console.log("finished file reading");
+});
