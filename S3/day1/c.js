@@ -1,3 +1,5 @@
+// ws is a websocket library
+// socket.io is another websocket library
 const { WebSocketServer } = require("ws");
 
 const wss = new WebSocketServer({ port: 8080 });
