@@ -26,6 +26,10 @@
 //   console.log("Someone said hello");
 // });
 
+// now the problem is, when will the emit event greet happen ?
+// it happens whenever the emitter emits it
+// i.e emitter.emit("greet")
+
 // emmitter.on("logout", function () {
 //   console.log("Someone logged out");
 // });
