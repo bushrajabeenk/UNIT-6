@@ -1,17 +1,20 @@
+// using express, for routing and for using middlewares
 const express = require("express");
 const { Server } = require("socket.io");
 
-//created the routing with express
+// created the routing with express
+// but not started the server with app, 
+// rather with websocket
 const app = express();
 // express only for features,
 // i.e routes and functionalities only
 
-// use http for creating the server, so that 
+// use http for creating the server, so that
 // i can pass it down to socket.io
 // we are using http for serving the index.html file
-// because with websocket only text responses will get served, files 
+// because with websocket only text responses will get served, files
 // cannot be served
-// if html file is not needed to be served then 
+// if html file is not needed to be served then
 // http server is not needed
 // if it only API based response, http, express is not needed
 const httpServer = require("http").createServer(app);
