@@ -13,6 +13,7 @@ const app = express();
 // cannot be served
 // if html file is not needed to be served then 
 // http server is not needed
+// if it only API based response, http, express is not needed
 const httpServer = require("http").createServer(app);
 
 const wss = new Server(httpServer);
