@@ -9,8 +9,10 @@ const app = express();
 // use http for creating the server, so that 
 // i can pass it down to socket.io
 // we are using http for serving the index.html file
-// becausewith websocket only text responses will get served, files 
+// because with websocket only text responses will get served, files 
 // cannot be served
+// if html file is not needed to be served then 
+// http server is not needed
 const httpServer = require("http").createServer(app);
 
 const wss = new Server(httpServer);
