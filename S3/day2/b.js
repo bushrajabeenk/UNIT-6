@@ -1,3 +1,4 @@
+// serving a html file using express
 const express = require("express");
 
 const app = express(); // express only for features
