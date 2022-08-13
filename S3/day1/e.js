@@ -15,7 +15,7 @@ wss.on("listening", () => {
   console.log("Server started, listening for new connections");
 });
 
-// when client/user/frontend establishes a connection with server
 wss.on("connection", (ws) => {
   console.log("Got new connection");
+  ws.send("Welcome user");
 });
