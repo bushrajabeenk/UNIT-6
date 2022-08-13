@@ -16,14 +16,14 @@ wss.on("listening", () => {
 });
 
 // when client/user/frontend establishes a connection with server
-wss.on("connection", (ws) => {
-  console.log("Got new connection");
-});
-
 // wss.on("connection", (ws) => {
 //   console.log("Got new connection");
-//   ws.on("message", (data) => {
-//     console.log("Socket sent message:", data.toString("utf-8"));
-//     ws.send("Hi back");
-//   });
 // });
+
+wss.on("connection", (ws) => {
+  console.log("Got new connection");
+  ws.on("message", (data) => {
+    console.log("Socket sent message:", data.toString("utf-8"));
+    ws.send("Hi back");
+  });
+});
