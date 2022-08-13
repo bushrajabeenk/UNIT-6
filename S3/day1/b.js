@@ -5,9 +5,9 @@ stream.on("data", (data) => {
   console.log(data);
 });
 
-// stream.on("data", (data) => {
-//   console.log(data.toString("utf-8"));
-// });
+stream.on("data", (data) => {
+  console.log(data.toString("utf-8"));
+});
 
 // stream.on("end", () => {
 //   console.log("finished file reading");
