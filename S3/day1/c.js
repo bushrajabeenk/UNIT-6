@@ -29,6 +29,7 @@ wss.on("connection", (ws) => {
     console.log("Socket sent message:", data.toString("utf-8"));
     // whatever is sent from here as ws.send will be available on the
     // browser inside ws
+    // utf-8 is for converting buffer data into string
     ws.send("Hi back");
   });
 });
