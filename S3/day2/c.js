@@ -2,8 +2,12 @@ const express = require("express");
 const { Server } = require("socket.io");
 
 //created the routing with express
-const app = express(); // express only for features, i.e routes and functionalities only
+const app = express();
+// express only for features,
+// i.e routes and functionalities only
 
+// use http for creating the server, so that 
+// i can pass it down to socket.io
 const httpServer = require("http").createServer(app);
 
 const wss = new Server(httpServer);
