@@ -27,6 +27,8 @@ wss.on("connection", (ws) => {
     // be vaialble here in ws, which can be accessed through
     // message, via data variable
     console.log("Socket sent message:", data.toString("utf-8"));
+    // whatever is sent from here as ws.send will be available on the
+    // browser inside ws
     ws.send("Hi back");
   });
 });
