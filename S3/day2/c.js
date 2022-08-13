@@ -8,6 +8,9 @@ const app = express();
 
 // use http for creating the server, so that 
 // i can pass it down to socket.io
+// we are using http for serving the index.html file
+// becausewith websocket only text responses will get served, files 
+// cannot be served
 const httpServer = require("http").createServer(app);
 
 const wss = new Server(httpServer);
