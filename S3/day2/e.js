@@ -15,8 +15,12 @@ wss.on("connection", (ws) => {
   // every single socket except current socket
   ws.broadcast.emit("new User");
 
+  ws.emit("history", history);
+
   ws.on("new message", (msgg) => {
     console.log("Got new message", msgg);
+
+    history.push(msgg);
 
     // use ws to get the message on all the users except the sender user
     // ws.emit("new message", msgg);
