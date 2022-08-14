@@ -36,11 +36,12 @@
       </form>
     </div>
 
-     <!-- this is the middleware being available to the
+    <!-- this is the middleware being available to the
      user on the same server on b.js where we have registered the socket -->
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
+      // io() is a window object which comes from /socket.io/socket.io.js
       const ws = io();
       ws.on("message", function (msg) {
         console.log("Server said:", msg);
