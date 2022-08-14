@@ -7,16 +7,11 @@ const webServer = require("http").createServer(app);
 
 const wss = new Server(webServer);
 
-const history = [];
-
 wss.on("connection", (ws) => {
   console.log("New user joined");
 
-  // every single socket except current socket
-  ws.broadcast.emit("new User");
-
   ws.on("new message", (msgg) => {
-    console.log("Got new message", msgg);
+    // console.log("Got new message", msgg);
 
     // use ws to get the message on all the users except the sender user
     // ws.emit("new message", msgg);
