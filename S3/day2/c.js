@@ -3,7 +3,7 @@ const express = require("express");
 const { Server } = require("socket.io");
 
 // created the routing with express
-// but not started the server with app, 
+// but not started the server with app,
 // rather with websocket
 const app = express();
 // express only for features,
@@ -23,7 +23,11 @@ const wss = new Server(httpServer);
 
 wss.on("connection", (ws) => {
   console.log("New user joined");
-  ws.send("hello user");
+  // ws.send("hello user");
+
+  ws.on("new msg", (m) => {
+    console.log(m);
+  });
 });
 
 // app has middleware

@@ -43,8 +43,19 @@
     <script>
       // io() is a window object which comes from /socket.io/socket.io.js
       const ws = io();
-      ws.on("message", function (msg) {
-        console.log("Server said:", msg);
+      // ws.on("new msg", (msg) => {
+      //   console.log("Server said:", msg);
+      // });
+
+      const form = document.querySelector(".forms");
+      const input = document.querySelector(".input");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const textMessage = input.value;
+        // my custom event
+        ws.emit("new msg", textMessage);
       });
     </script>
   </body>
