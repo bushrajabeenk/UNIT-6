@@ -1,3 +1,5 @@
+// logic  is written in controllers
+
 import { User, UserModel } from "../models/user.model";
 
 export async function getAllUsers() {
