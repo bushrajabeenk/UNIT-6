@@ -10,6 +10,7 @@ const wss = new Server(webServer);
 const history = [];
 
 wss.on("connection", (ws) => {
+  // every single socket except current socket
   ws.broadcast.emit("new user", history);
   ws.emit("history", history);
 });
@@ -19,6 +20,7 @@ wss.on("connection", (ws) => {
     history.push(m);
     // use ws to get the message on all the users except the sender user
     // ws.broadcast.emit("new message", m);
+
     // use wss to get the message on all the users including itself
     wss.emit("new message", m);
   });
