@@ -10,14 +10,14 @@ const wss = new Server(webServer);
 wss.on("connection", (ws) => {
   console.log("New user joined");
 
-  ws.on("new message", (msgg) => {
-    // console.log("Got new message", msgg);
+  ws.on("new message", (m) => {
+    console.log("Got new message", m);
 
     // use ws to get the message on all the users except the sender user
-    // ws.emit("new message", msgg);
+    // ws.broadcast.emit("new message", m);
 
     // use wss to get the message on all the users including itself
-    wss.emit("new message", msgg);
+    wss.emit("new message", m);
   });
 });
 

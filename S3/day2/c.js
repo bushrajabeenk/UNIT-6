@@ -23,7 +23,7 @@ const wss = new Server(httpServer);
 
 wss.on("connection", (ws) => {
   console.log("New user joined");
-  // ws.send("hello user");
+  ws.send("hello user");
 
   ws.on("new msg", (m) => {
     console.log(m);

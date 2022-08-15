@@ -30,8 +30,8 @@
   <body>
     <div class="container">
       <div class="messages"></div>
-      <form class="forms">
-        <input type="text" class="input" />
+      <form id="forms">
+        <input type="text" id="input" />
         <button class="send">Send</button>
       </form>
     </div>
@@ -47,8 +47,8 @@
       //   console.log("Server said:", msg);
       // });
 
-      const form = document.querySelector(".forms");
-      const input = document.querySelector(".input");
+      const form = document.getElementById("#forms");
+      const input = document.getElementById("#input");
 
       form.addEventListener("submit", (e) => {
         e.preventDefault();

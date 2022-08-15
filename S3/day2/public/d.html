@@ -9,7 +9,7 @@
     <title>Chatter</title>
     <style>
       body {
-        width: 100vw;
+        width: 80vw;
         height: 100vh;
       }
       #container {
@@ -23,10 +23,10 @@
       #forms {
         display: flex;
         gap: 10px;
-        position: fixed;
+        /* position: fixed;
         bottom: 0;
         width: 80%;
-        padding: 10px;
+        padding: 10px; */
       }
       #input {
         width: 100%;
@@ -59,10 +59,10 @@
         ws.emit("new message", textMessage);
       });
 
-      ws.on("new message", (msg) => {
+      ws.on("new message", (m) => {
         const span = document.createElement("div");
-        span.innerText = msg;
-        messagesdiv.appendChild(span);
+        span.innerText = m;
+        messagesDiv.appendChild(span);
       });
     </script>
   </body>
