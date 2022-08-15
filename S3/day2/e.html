@@ -58,6 +58,17 @@
       const input = document.getElementById("input");
       const messagesDiv = document.getElementById("messages");
 
+      // TO SHOW "OTHER USER IS TYPING"
+      // IT REEPLACES THE OTHER MESSAGES HISTORY
+      // ONLY FOR UNDERSTANDING PURPOSE
+      // input.addEventListener("keyup", () => {
+      //   ws.emit("typing");
+      // });
+
+      // ws.on("typing", () => {
+      //   messagesDiv.innerText = "Other user is typing";
+      // });
+
       form.addEventListener("submit", (e) => {
         e.preventDefault();
 

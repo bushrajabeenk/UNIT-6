@@ -15,6 +15,15 @@ wss.on("connection", (ws) => {
   ws.emit("history", history);
 });
 
+// TO SHOW "OTHER USER IS TYPING"
+// IT REEPLACES THE OTHER MESSAGES HISTORY
+// ONLY FOR UNDERSTANDING PURPOSE
+// wss.on("connection", (ws) => {
+//   ws.on("typing", () => {
+//     ws.broadcast.emit("typing");
+//   });
+// });
+
 wss.on("connection", (ws) => {
   ws.on("new message", (m) => {
     history.push(m);
