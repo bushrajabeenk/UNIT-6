@@ -8,11 +8,9 @@ const webServer = require("http").createServer(app);
 const wss = new Server(webServer);
 
 wss.on("connection", (ws) => {
-  console.log("New user joined");
+  ws.emit("new user");
 
   ws.on("new message", (m) => {
-    console.log("Got new message", m);
-
     // use ws to get the message on all the users except the sender user
     // ws.broadcast.emit("new message", m);
 

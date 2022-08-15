@@ -70,6 +70,10 @@
         span.innerText = m;
         messagesDiv.appendChild(span);
       });
+
+      ws.on("new user", () => {
+        alert("New user joined chat");
+      });
     </script>
   </body>
 </html>
