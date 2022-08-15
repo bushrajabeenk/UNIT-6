@@ -12,19 +12,14 @@ const history = [];
 wss.on("connection", (ws) => {
   ws.broadcast.emit("new user", history);
   ws.emit("history", history);
-
-  // ws.on("new message", (m) => {
-  //   // use ws to get the message on all the users except the sender user
-  //   // ws.broadcast.emit("new message", m);
-
-  //   // use wss to get the message on all the users including itself
-  //   wss.emit("new message", m);
-  // });
 });
 
 wss.on("connection", (ws) => {
   ws.on("new message", (m) => {
     history.push(m);
+    // use ws to get the message on all the users except the sender user
+    // ws.broadcast.emit("new message", m);
+    // use wss to get the message on all the users including itself
     wss.emit("new message", m);
   });
 });

@@ -76,11 +76,10 @@
         const span = document.createElement("div");
         span.innerText = "New user joined chat";
         messagesDiv.appendChild(span);
-        console.log(messagesDiv);
       });
 
       ws.on("history", (hs) => {
-        if (hs.length > 0) {
+        if (hs?.length > 0) {
           for (const h of hs) {
             const span = document.createElement("div");
             span.innerText = h;
