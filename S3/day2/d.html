@@ -41,6 +41,7 @@
   </head>
   <body>
     <div id="container">
+      <h1>Chatter</h1>
       <div id="messages"></div>
       <form id="forms">
         <input type="text" id="input" />
@@ -65,14 +66,27 @@
         ws.emit("new message", textMessage);
       });
 
-      ws.on("new message", (m) => {
+      ws.on("new message", function (msg) {
         const span = document.createElement("div");
-        span.innerText = m;
+        span.innerText = msg;
         messagesDiv.appendChild(span);
       });
 
       ws.on("new user", () => {
-        alert("New user joined chat");
+        const span = document.createElement("div");
+        span.innerText = "New user joined chat";
+        messagesDiv.appendChild(span);
+        console.log(messagesDiv);
+      });
+
+      ws.on("history", (hs) => {
+        if (hs.length > 0) {
+          for (const h of hs) {
+            const span = document.createElement("div");
+            span.innerText = h;
+            messagesDiv.appendChild(span);
+          }
+        }
       });
     </script>
   </body>
