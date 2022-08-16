@@ -71,7 +71,6 @@
 
       form.addEventListener("submit", (e) => {
         e.preventDefault();
-
         const textMessage = input.value;
         // my custom event
         ws.emit("new message", textMessage);
