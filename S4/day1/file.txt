@@ -1,0 +1,134 @@
+Bushra@BUSH-PC MINGW64 ~/Desktop/UNIT-6/S4/day1 (main)
+$ rdcli -h3.96.55.203
+127.0.0.1:6379> (error) Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+
+Bushra@BUSH-PC MINGW64 ~/Desktop/UNIT-6/S4/day1 (main)
+$ rdcli -h 3.96.55.203
+3.96.55.203:6379> redis-cli
+(error) ERR unknown command 'redis-cli', with args beginning with: 
+3.96.55.203:6379> SET
+(error) ERR wrong number of arguments for 'set' command
+3.96.55.203:6379> redis-cli
+(error) ERR unknown command 'redis-cli', with args beginning with: 
+3.96.55.203:6379> SET age 100
+OK
+3.96.55.203:6379> SET token 1kjadkjhbwsjuhbhhfbhjyerf
+OK
+3.96.55.203:6379> GET token
+1kjadkjhbwsjuhbhhfbhjyerf
+3.96.55.203:6379> set age 12
+OK
+3.96.55.203:6379> set token 1234 EX 10
+OK
+3.96.55.203:6379> get token
+1234
+3.96.55.203:6379> get token
+(nil)
+3.96.55.203:6379> INCR counter
+(integer) 9
+3.96.55.203:6379> INCR count
+(integer) 1
+3.96.55.203:6379> SET cnt 0 
+OK
+3.96.55.203:6379> INCR cnt 1
+(error) ERR wrong number of arguments for 'incr' command
+3.96.55.203:6379> INCR cnt
+(integer) 1
+3.96.55.203:6379> del counter
+(integer) 1
+3.96.55.203:6379> del count
+(integer) 1
+3.96.55.203:6379> del cnt
+(integer) 1
+3.96.55.203:6379> SET counter 0
+OK
+3.96.55.203:6379> GET counter
+0
+3.96.55.203:6379> INCRBY counter 2
+(integer) 7
+3.96.55.203:6379> GET counter
+7
+3.96.55.203:6379> DEL counter
+(integer) 1
+3.96.55.203:6379> GET counter
+10
+3.96.55.203:6379> DECR counter
+(integer) 9
+3.96.55.203:6379> DECR counter
+(integer) 8
+3.96.55.203:6379> DECR counter
+(integer) 7
+3.96.55.203:6379> DECR counter
+(integer) 6
+3.96.55.203:6379> DECR counter
+(integer) 5
+3.96.55.203:6379> DECRBY counter 5
+(integer) 0
+3.96.55.203:6379> RPUSH batch:bush nem201 nem101
+(integer) 2
+3.96.55.203:6379> LRANGE batch 0 -1
+
+3.96.55.203:6379> LRANGE batch:bush 0 -1
+1) nem201
+2) nem101
+3.96.55.203:6379> LPUSH batch:bush js101
+(integer) 3
+3.96.55.203:6379> LRANGE batch:bush 0 -1
+1) js101
+2) nem201
+3) nem101
+3.96.55.203:6379> RPUSH batch:bush web201
+(integer) 4
+3.96.55.203:6379> LRANGE batch:bush 0 -1
+1) js101
+2) nem201
+3) nem101
+4) web201
+3.96.55.203:6379> RRANGE batch:bush 0 -1
+(error) ERR unknown command 'rrange', with args beginning with: 'batch:bush' '0' '-1'
+3.96.55.203:6379> SADD databases:bush mysql postgresql
+(integer) 2
+3.96.55.203:6379> SCARD databses
+(integer) 0
+3.96.55.203:6379> SMEMBERS databases
+1) mongodb
+2) nosql
+3) mysql
+3.96.55.203:6379> SADD databses mongodb
+(integer) 1
+3.96.55.203:6379> SMEMBERS databases
+
+3.96.55.203:6379> SMEMBERS databases:bush
+
+3.96.55.203:6379> SMEMBERS databases
+
+3.96.55.203:6379> SCARD databses
+3.96.55.203:6379> HGET user:john age
+10
+3.96.55.203:6379> HGET user:john salary
+1090
+3.96.55.203:6379> HGET user:john name
+john doe
+3.96.55.203:6379> HDEL user:john age
+(integer) 0
+3.96.55.203:6379> HGETALL user:john
+1) "age"
+2) "10"
+3) "name"
+4) "john doe"
+5) "salary"
+6) "10000"
+3.96.55.203:6379> HDEL user:john age
+(integer) 1
+3.96.55.203:6379> HGETALL user:john
+1) "name"
+2) "john doe"
+3) "salary"
+4) "10000"
+3.96.55.203:6379>
+
+
+
+
+
+
