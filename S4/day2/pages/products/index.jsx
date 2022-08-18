@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const data = [
@@ -7,18 +8,16 @@ const data = [
   { id: 4, name: "ipod" },
 ];
 
-export default Products = () => {
+export default function Products() {
   return (
     <div>
-      <div>
-        {data.map((el) => {
-          return (
-            <div>
-              <Link href={`/products/${el.id}`}>{el.name}</Link>
-            </div>
-          );
-        })}
-      </div>
+      {data.map((el) => {
+        return (
+          <div key={el.id}>
+            <Link href={`/products/${el.id}`}>{el.name}</Link>
+          </div>
+        );
+      })}
     </div>
   );
-};
+}
