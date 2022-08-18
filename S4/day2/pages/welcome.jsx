@@ -6,7 +6,6 @@ const welcome = () => {
   return (
     <div>
       <Navbar />
-
       <h3>Counter: {count}</h3>
       <div>
         <button onClick={() => setCount(count + 1)}>Click me</button>
