@@ -32,7 +32,7 @@
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // PART - 2
-// SERVER SIDE RENDERING - USING NEXT.JS
+// SERVER SIDE RENDERING - USING NEXT.JS - FETCH
 import { useRouter } from "next/router";
 
 const url = "https://jsonplaceholder.typicode.com/users";
