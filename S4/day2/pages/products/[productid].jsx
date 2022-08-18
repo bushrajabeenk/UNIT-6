@@ -1,6 +1,26 @@
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+
+const url = "https://jsonplaceholder.typicode.com/users";
 
 export default function ProductDetails() {
+  const [data, setData] = useState({});
   const [productid] = useRouter().query;
-  return <h1>Product details of id: {productid}</h1>;
+
+  useEffect(() => {
+    fetch(`${url}/${productid}`)
+      .then((x) => x.json())
+      .then((data) => {
+        console.log(data);
+        setData(data);
+      });
+  }, [productid]);
+
+  return (
+    <div>
+      User details of id: {productid}
+      <div>Name: {data.name}</div>
+      <div>Email: {data.email}</div>
+    </div>
+  );
 }
