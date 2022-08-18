@@ -6,7 +6,6 @@ export default function welcome({ data }) {
   return (
     <div>
       <Navbar />
-
       <h1>The server side data :</h1>
       <p>{data}</p>
       <h3>Counter: {count}</h3>
