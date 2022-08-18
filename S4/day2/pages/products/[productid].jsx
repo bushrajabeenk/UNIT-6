@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const url = "https://jsonplaceholder.typicode.com/users";
 
 export default function ProductDetails() {
   const [data, setData] = useState({});
-  const [productid] = useRouter().query;
+  const { productid } = useRouter().query;
 
   useEffect(() => {
     fetch(`${url}/${productid}`)
