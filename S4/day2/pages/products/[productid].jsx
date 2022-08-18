@@ -1,3 +1,6 @@
+// PART - 1
+// CLIENT SIDE RENDERING - NORMAL REACT WAY
+
 // import { useRouter } from "next/router";
 // import { useEffect, useState } from "react";
 
@@ -25,6 +28,11 @@
 //   );
 // }
 
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// PART - 2
+// SERVER SIDE RENDERING - USING NEXT.JS
 import { useRouter } from "next/router";
 
 const url = "https://jsonplaceholder.typicode.com/users";
