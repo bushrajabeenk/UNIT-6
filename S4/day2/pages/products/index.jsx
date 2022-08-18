@@ -1,10 +1,10 @@
 import React from "react";
 
 const data = [
-  { id: 1, name: "p1" },
-  { id: 2, name: "p2" },
-  { id: 3, name: "p3" },
-  { id: 4, name: "p4" },
+  { id: 1, name: "laptop" },
+  { id: 2, name: "mobile" },
+  { id: 3, name: "ps4" },
+  { id: 4, name: "ipod" },
 ];
 
 export default Products = () => {
