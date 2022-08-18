@@ -7,16 +7,18 @@ const data = [
   { id: 4, name: "p4" },
 ];
 
-const Products = () => {
+export default Products = () => {
   return (
     <div>
       <div>
         {data.map((el) => {
-          return <p>{el.name}</p>;
+          return (
+            <div>
+              <Link href={`/products/${el.id}`}>{el.name}</Link>
+            </div>
+          );
         })}
       </div>
     </div>
   );
 };
-
-export default Products;
